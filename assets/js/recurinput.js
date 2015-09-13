@@ -140,7 +140,7 @@ function init_rrule(rrule) {
 	if(rrule_str != '') {
 		console.log('rrule_str='+rrule_str);
 		rule = RRule.fromString(rrule_str);
-		$('#round-recurrence_text').val(rule.toText());
+		$('#round-recurrence-recurinput').val(rule.toText());
 		//console.log('rule='+JSON.stringify(rule));
 
 		//setup recurrence

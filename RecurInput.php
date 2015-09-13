@@ -25,7 +25,7 @@ class RecurInput extends InputWidget
     /**
      * @var string the template to render the input.
      */
-    public $template = '{addon}{input}';
+    public $template = '{input}';
 
     /**
      * @var bool whether to render the input as an inline form
@@ -77,51 +77,28 @@ class RecurInput extends InputWidget
         if (isset($this->_displayOptions['name'])) {
             unset($this->_displayOptions['name']);
         }
-        $this->registerAssets();
-        $this->registerTranslations();
-        $this->renderInput();
+        $this->registerClientScript();
+//        $this->renderInput();
     }
-
-    /**
-     * Registers the needed assets
-     */
-    public function registerAssets()
-    {
-        $view = $this->getView();
-        RecurInputAsset::register($view);
-    }
-
-
-    /**
-     * Register widget translations.
-     */
-    public function registerTranslations()
-    {
-        Yii::$app->i18n->translations['recurinput'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@devleaks/recurinput/messages',
-            'forceTranslation' => true
-        ];
-    }
-
 
     /**
      * @inheritdoc
      */
     public function run()
     {
-        $name = $this->_displayOptions['id'];
-        $this->_displayOptions['readonly'] = 'readonly';
-        $input = Html::textInput($name, $this->model->recurrence_text, $this->_displayOptions);
- 
+        $name = $this->options['id'];
+        $this->options['readonly'] = 'readonly';
+        $input = $this->hasModel() ?
+		   Html::activeTextInput($this->model, $this->attribute, $this->options) :
+		   Html::textInput($this->name, $this->value, $this->options);
+		
         if ($this->inline) {
             $input .= '<div></div>';
         }
         if ($this->addons && !$this->inline) {
 			$addons = '';
-			foreach($this->addons as $addon) {
-				$addons .= Html::tag('span', $addon, ['class' => 'input-group-addon']);
-			}
+			$addons .= Html::button( '<i class="glyphicon glyphicon-repeat"></i>', ['name' => 'riedit', 'class' => 'input-group-addon']);
+			$addons .= Html::button( '<i class="glyphicon glyphicon-remove"></i>', ['name' => 'ridelete', 'class' => 'input-group-addon']);
             $input = strtr($this->template, ['{input}' => $input, '{addon}' => $addons]);
             $input = Html::tag('div', $input, $this->containerOptions);
         }
@@ -143,5 +120,31 @@ class RecurInput extends InputWidget
 		// renders hidden div with form
     }
 
+    /**
+     * Registers required script for the plugin to work as DatePicker
+     */
+    public function registerClientScript()
+    {
+        $view = $this->getView();
+        RecurInputAsset::register($view);
+
+        $js = [];
+        $id = $this->options['id'];
+        $js[] = "/*begin recurinput*/";
+        $js[] = ";";
+        $selector = "jQuery('#$id')";
+
+        $options = !empty($this->clientOptions) ? Json::encode($this->clientOptions) : '';
+
+        $js[] = "$selector.recurrenceinput({startField: 'round-start_date', template: {display: '#mytemplate' } });";
+
+		if (!empty($this->clientEvents)) {
+            foreach ($this->clientEvents as $event => $handler) {
+                $js[] = "$selector.on('$event', $handler);";
+            }
+        }
+        $js[] = "/*end recurinput*/";
+        $view->registerJs(implode("\n", $js));
+    }
 
 }

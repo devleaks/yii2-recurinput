@@ -1,6 +1,6 @@
 Calendar Recurrence Input Panel
 ===============================
-RFC 2445 iCalendar RECUR Data Type Input
+RFC 5545 iCalendar RECUR Data Type Input
 
 Installation
 ------------
@@ -50,6 +50,7 @@ The following PHP classes/libraries might be useful in processing RRULE strings:
   * [Recurr](https://github.com/simshaun/recurr)
   * [When](https://github.com/tplaner/When)
   * [RRULE for PHP](https://github.com/rlanvin/php-rrule)
+  * [jquery.recurrenceinput.js](https://github.com/collective/jquery.recurrenceinput.js)
 
 while this JavaScript library used in this plugin might also help:
 
@@ -57,11 +58,11 @@ while this JavaScript library used in this plugin might also help:
 
 Exemples of recurence input forms:
 
-  * https://auth.s1.exacttarget.com/FuelUX/controls/scheduler/example.html
-  * http://jkbrzt.github.io/rrule/
+  * [FuelUX Scheudler](https://auth.s1.exacttarget.com/FuelUX/controls/scheduler/example.html)
+  * [rrule.js](http://jkbrzt.github.io/rrule/)
 
 Reference:
 
-  * http://www.kanzaki.com/docs/ical/rrule.html
+  * [iCalendar RRULE](http://www.kanzaki.com/docs/ical/rrule.html)
 
 Let's get lazy. Let's schedule it once, and use recurrence.

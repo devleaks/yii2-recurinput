@@ -6,12 +6,16 @@ use yii\web\AssetBundle;
 
 class RecurInputAsset extends AssetBundle
 {
-   public $js = [
-        'js/recurinput.js',
-    ];
+    public $sourcePath = '@vendor/bower/jquery.recurrenceinput.js';
 
-    public $depends = [
-        'yii\web\JqueryAsset',
-		'devleaks\recurinput\RRuleAsset'
-    ]; 
+	public $js = [
+	    'lib/jquery.tmpl.js',
+		'lib/jquery.tools.dateinput.js',
+		'lib/jquery.tools.overlay.js',
+	    'src/jquery.recurrenceinput.js',
+	 ];
+
+	public $css = [
+	     'src/jquery.recurrenceinput.css',
+	 ];
 }
